@@ -41,3 +41,13 @@ set_property PACKAGE_PIN V17 [get_ports {eth0_gmii_rxd_i[2]}]
 set_property PACKAGE_PIN Y17 [get_ports {eth0_gmii_rxd_i[3]}]
 
 set_property IOSTANDARD LVCMOS33 [get_ports eth0_*]
+
+
+# ---------------------------------------------------------
+# LEDs
+# ---------------------------------------------------------
+
+set_property PACKAGE_PIN W13 [get_ports {green_led}]
+set_property PACKAGE_PIN W14 [get_ports {red_led}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports *_led]
