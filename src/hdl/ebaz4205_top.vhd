@@ -27,7 +27,7 @@ use ieee.numeric_std.all;
 
 
 entity ebaz4205_top is
-  
+
   port (
     -- ddr
     ddr_addr_io          : inout std_logic_vector (14 downto 0);
@@ -60,8 +60,10 @@ entity ebaz4205_top is
     fixed_io_mio_io      : inout std_logic_vector (53 downto 0);
     fixed_io_ps_clk_io   : inout std_logic;
     fixed_io_ps_porb_io  : inout std_logic;
-    fixed_io_ps_srstb_io : inout std_logic);
-  
+    fixed_io_ps_srstb_io : inout std_logic;
+    green_led            : out   std_logic;
+    red_led              : out   std_logic);
+
 end entity ebaz4205_top;
 
 
@@ -70,7 +72,11 @@ architecture arch of ebaz4205_top is
 
   signal eth0_gmii_txd : std_logic_vector(7 downto 0);
   signal eth0_gmii_rxd : std_logic_vector(7 downto 0);
-  
+
+  signal emio_i : std_logic_vector(63 downto 0);
+  signal emio_o : std_logic_vector(63 downto 0);
+  signal emio_t : std_logic_vector(63 downto 0);
+
 begin
 
   -----------------------------------------------------------------------------
@@ -107,7 +113,10 @@ begin
       fixed_io_mio      => fixed_io_mio_io,
       fixed_io_ps_clk   => fixed_io_ps_clk_io,
       fixed_io_ps_porb  => fixed_io_ps_porb_io,
-      fixed_io_ps_srstb => fixed_io_ps_srstb_io);
+      fixed_io_ps_srstb => fixed_io_ps_srstb_io,
+      emio_i            => emio_i,
+      emio_o            => emio_o,
+      emio_t            => emio_t);
 
 
   -----------------------------------------------------------------------------
@@ -116,5 +125,9 @@ begin
 
   eth0_gmii_txd_o <= eth0_gmii_txd(eth0_gmii_txd_o'range);
   eth0_gmii_rxd   <= b"0000" & eth0_gmii_rxd_i;
+
+  red_led   <= emio_o(0);  
+  green_led <= emio_o(1);
+
 
 end architecture arch;

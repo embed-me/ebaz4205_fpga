@@ -195,6 +195,9 @@ proc create_root_design { parentCell } {
 
 
   # Create ports
+  set emio_i [ create_bd_port -dir I -from 63 -to 0 emio_i ]
+  set emio_o [ create_bd_port -dir O -from 63 -to 0 emio_o ]
+  set emio_t [ create_bd_port -dir O -from 63 -to 0 emio_t ]
   set eth0_gmii_rx_clk [ create_bd_port -dir I -type clk eth0_gmii_rx_clk ]
   set eth0_gmii_rx_dv [ create_bd_port -dir I eth0_gmii_rx_dv ]
   set eth0_gmii_rxd [ create_bd_port -dir I -from 7 -to 0 eth0_gmii_rxd ]
@@ -259,6 +262,7 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_ENET_RESET_SELECT {Share reset pin} \
    CONFIG.PCW_EN_EMIO_CD_SDIO0 {0} \
    CONFIG.PCW_EN_EMIO_ENET0 {1} \
+   CONFIG.PCW_EN_EMIO_GPIO {1} \
    CONFIG.PCW_EN_EMIO_I2C0 {0} \
    CONFIG.PCW_EN_ENET0 {1} \
    CONFIG.PCW_EN_GPIO {1} \
@@ -278,6 +282,9 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_FPGA_FCLK1_ENABLE {0} \
    CONFIG.PCW_FPGA_FCLK2_ENABLE {0} \
    CONFIG.PCW_FPGA_FCLK3_ENABLE {0} \
+   CONFIG.PCW_GPIO_EMIO_GPIO_ENABLE {1} \
+   CONFIG.PCW_GPIO_EMIO_GPIO_IO {64} \
+   CONFIG.PCW_GPIO_EMIO_GPIO_WIDTH {64} \
    CONFIG.PCW_GPIO_MIO_GPIO_ENABLE {1} \
    CONFIG.PCW_GPIO_MIO_GPIO_IO {MIO} \
    CONFIG.PCW_I2C0_GRP_INT_ENABLE {0} \
@@ -579,8 +586,11 @@ proc create_root_design { parentCell } {
   connect_bd_net -net ENET0_GMII_RX_CLK_0_1 [get_bd_ports eth0_gmii_rx_clk] [get_bd_pins processing_system7_0/ENET0_GMII_RX_CLK]
   connect_bd_net -net ENET0_GMII_RX_DV_0_1 [get_bd_ports eth0_gmii_rx_dv] [get_bd_pins processing_system7_0/ENET0_GMII_RX_DV]
   connect_bd_net -net ENET0_GMII_TX_CLK_0_1 [get_bd_ports eth0_gmii_tx_clk] [get_bd_pins processing_system7_0/ENET0_GMII_TX_CLK]
+  connect_bd_net -net GPIO_I_0_1 [get_bd_ports emio_i] [get_bd_pins processing_system7_0/GPIO_I]
   connect_bd_net -net processing_system7_0_ENET0_GMII_TXD [get_bd_ports eth0_gmii_txd] [get_bd_pins processing_system7_0/ENET0_GMII_TXD]
   connect_bd_net -net processing_system7_0_ENET0_GMII_TX_EN [get_bd_ports eth0_gmii_tx_en] [get_bd_pins processing_system7_0/ENET0_GMII_TX_EN]
+  connect_bd_net -net processing_system7_0_GPIO_O [get_bd_ports emio_o] [get_bd_pins processing_system7_0/GPIO_O]
+  connect_bd_net -net processing_system7_0_GPIO_T [get_bd_ports emio_t] [get_bd_pins processing_system7_0/GPIO_T]
 
   # Create address segments
 

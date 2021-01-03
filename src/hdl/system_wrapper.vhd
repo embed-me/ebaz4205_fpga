@@ -1,7 +1,7 @@
 --Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
---Date        : Tue Dec 15 16:24:42 2020
+--Date        : Thu Dec 31 19:13:36 2020
 --Host        : vm-centos7 running 64-bit CentOS Linux release 7.8.2003 (Core)
 --Command     : generate_target system_wrapper.bd
 --Design      : system_wrapper
@@ -28,6 +28,9 @@ entity system_wrapper is
     ddr_ras_n : inout STD_LOGIC;
     ddr_reset_n : inout STD_LOGIC;
     ddr_we_n : inout STD_LOGIC;
+    emio_i : in STD_LOGIC_VECTOR ( 63 downto 0 );
+    emio_o : out STD_LOGIC_VECTOR ( 63 downto 0 );
+    emio_t : out STD_LOGIC_VECTOR ( 63 downto 0 );
     eth0_gmii_rx_clk : in STD_LOGIC;
     eth0_gmii_rx_dv : in STD_LOGIC;
     eth0_gmii_rxd : in STD_LOGIC_VECTOR ( 7 downto 0 );
@@ -54,6 +57,12 @@ architecture STRUCTURE of system_wrapper is
     eth0_gmii_tx_clk : in STD_LOGIC;
     eth0_gmii_tx_en : out STD_LOGIC_VECTOR ( 0 to 0 );
     eth0_gmii_txd : out STD_LOGIC_VECTOR ( 7 downto 0 );
+    fixed_io_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
+    fixed_io_ddr_vrn : inout STD_LOGIC;
+    fixed_io_ddr_vrp : inout STD_LOGIC;
+    fixed_io_ps_srstb : inout STD_LOGIC;
+    fixed_io_ps_clk : inout STD_LOGIC;
+    fixed_io_ps_porb : inout STD_LOGIC;
     ddr_cas_n : inout STD_LOGIC;
     ddr_cke : inout STD_LOGIC;
     ddr_ck_n : inout STD_LOGIC;
@@ -69,16 +78,13 @@ architecture STRUCTURE of system_wrapper is
     ddr_dq : inout STD_LOGIC_VECTOR ( 31 downto 0 );
     ddr_dqs_n : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     ddr_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    fixed_io_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
-    fixed_io_ddr_vrn : inout STD_LOGIC;
-    fixed_io_ddr_vrp : inout STD_LOGIC;
-    fixed_io_ps_srstb : inout STD_LOGIC;
-    fixed_io_ps_clk : inout STD_LOGIC;
-    fixed_io_ps_porb : inout STD_LOGIC;
     eth0_mdio_mdc : out STD_LOGIC;
     eth0_mdio_mdio_o : out STD_LOGIC;
     eth0_mdio_mdio_t : out STD_LOGIC;
-    eth0_mdio_mdio_i : in STD_LOGIC
+    eth0_mdio_mdio_i : in STD_LOGIC;
+    emio_i : in STD_LOGIC_VECTOR ( 63 downto 0 );
+    emio_o : out STD_LOGIC_VECTOR ( 63 downto 0 );
+    emio_t : out STD_LOGIC_VECTOR ( 63 downto 0 )
   );
   end component system;
   component IOBUF is
@@ -117,6 +123,9 @@ system_i: component system
       ddr_ras_n => ddr_ras_n,
       ddr_reset_n => ddr_reset_n,
       ddr_we_n => ddr_we_n,
+      emio_i(63 downto 0) => emio_i(63 downto 0),
+      emio_o(63 downto 0) => emio_o(63 downto 0),
+      emio_t(63 downto 0) => emio_t(63 downto 0),
       eth0_gmii_rx_clk => eth0_gmii_rx_clk,
       eth0_gmii_rx_dv => eth0_gmii_rx_dv,
       eth0_gmii_rxd(7 downto 0) => eth0_gmii_rxd(7 downto 0),
