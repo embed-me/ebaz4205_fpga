@@ -56,7 +56,9 @@ syn_post_bitstream_cmd = "$(TCL_INTERPRETER) syn_post_bitstream_cmd.tcl $(TCL_OP
 src_root = "../src/"
 
 files = [
-    src_root + "xilinx/xdc/pinout.xdc",
+    src_root + "xilinx/xdc/pinout.xdc",    
+    src_root + "xilinx/xdc/general.xdc",
+    src_root + "xilinx/xdc/bitstream.xdc",
     src_root + "xilinx/bd/system.tcl",
 ]
 
