@@ -12,11 +12,11 @@ the Zynq platform. This repo provides a minimal FPGA Design.
 
 The configuration/makefile generation depends on:
 
-	[hdlmake](https://hdlmake.readthedocs.io/en/master/)
+* [hdlmake](https://hdlmake.readthedocs.io/en/master/)
 
 The build depends on:
 
-	[Xilinx Vivado](https://www.xilinx.com/products/design-tools/vivado.html)
+* [Xilinx Vivado](https://www.xilinx.com/products/design-tools/vivado.html)
 
 ## Configure
 
