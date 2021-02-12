@@ -8,6 +8,12 @@ the Zynq platform. This repo provides a minimal FPGA Design.
 
 	Lukas Lichtl (admin@embed-me.com)
 
+## Hardware Support
+
+There seem to be two hardware versions currently sold, one with a
+PHY oscillator mounted and one where it is missing.
+This design current supports both versions.
+
 ## Dependencies
 
 The configuration/makefile generation depends on:
