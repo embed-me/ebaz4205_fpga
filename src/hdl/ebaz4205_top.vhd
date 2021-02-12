@@ -46,6 +46,7 @@ entity ebaz4205_top is
     ddr_reset_n_io       : inout std_logic;
     ddr_we_n_io          : inout std_logic;
     -- eth0
+    eth0_clk_o           : out   std_logic; -- alternative clock, only used when Oscillator is missing on the PCB
     eth0_gmii_rx_clk_i   : in    std_logic;
     eth0_gmii_rx_dv_i    : in    std_logic;
     eth0_gmii_rxd_i      : in    std_logic_vector (3 downto 0);
@@ -100,6 +101,7 @@ begin
       ddr_ras_n         => ddr_ras_n_io,
       ddr_reset_n       => ddr_reset_n_io,
       ddr_we_n          => ddr_we_n_io,
+      eth0_clk          => eth0_clk_o,
       eth0_gmii_rx_clk  => eth0_gmii_rx_clk_i,
       eth0_gmii_rx_dv   => eth0_gmii_rx_dv_i,
       eth0_gmii_rxd     => eth0_gmii_rxd,

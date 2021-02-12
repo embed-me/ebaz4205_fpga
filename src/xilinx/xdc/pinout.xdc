@@ -25,6 +25,7 @@
 # Ethernet 0
 # ---------------------------------------------------------
 
+set_property PACKAGE_PIN U18 [get_ports {eth0_clk_o}]
 set_property PACKAGE_PIN U14 [get_ports {eth0_gmii_rx_clk_i}]
 set_property PACKAGE_PIN U15 [get_ports {eth0_gmii_tx_clk_i}]
 set_property PACKAGE_PIN W19 [get_ports {eth0_gmii_tx_en_o[0]}]
