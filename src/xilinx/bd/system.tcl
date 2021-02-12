@@ -198,6 +198,10 @@ proc create_root_design { parentCell } {
   set emio_i [ create_bd_port -dir I -from 63 -to 0 emio_i ]
   set emio_o [ create_bd_port -dir O -from 63 -to 0 emio_o ]
   set emio_t [ create_bd_port -dir O -from 63 -to 0 emio_t ]
+  set eth0_clk [ create_bd_port -dir O -type clk eth0_clk ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {25000000} \
+ ] $eth0_clk
   set eth0_gmii_rx_clk [ create_bd_port -dir I -type clk eth0_gmii_rx_clk ]
   set eth0_gmii_rx_dv [ create_bd_port -dir I eth0_gmii_rx_dv ]
   set eth0_gmii_rxd [ create_bd_port -dir I -from 7 -to 0 eth0_gmii_rxd ]
@@ -213,7 +217,7 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_ACT_DCI_PERIPHERAL_FREQMHZ {10.158730} \
    CONFIG.PCW_ACT_ENET0_PERIPHERAL_FREQMHZ {25.000000} \
    CONFIG.PCW_ACT_ENET1_PERIPHERAL_FREQMHZ {10.000000} \
-   CONFIG.PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ {50.000000} \
+   CONFIG.PCW_ACT_FPGA0_PERIPHERAL_FREQMHZ {25.000000} \
    CONFIG.PCW_ACT_FPGA1_PERIPHERAL_FREQMHZ {10.000000} \
    CONFIG.PCW_ACT_FPGA2_PERIPHERAL_FREQMHZ {10.000000} \
    CONFIG.PCW_ACT_FPGA3_PERIPHERAL_FREQMHZ {10.000000} \
@@ -234,7 +238,7 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_ARMPLL_CTRL_FBDIV {40} \
    CONFIG.PCW_CAN_PERIPHERAL_DIVISOR0 {1} \
    CONFIG.PCW_CAN_PERIPHERAL_DIVISOR1 {1} \
-   CONFIG.PCW_CLK0_FREQ {50000000} \
+   CONFIG.PCW_CLK0_FREQ {25000000} \
    CONFIG.PCW_CLK1_FREQ {10000000} \
    CONFIG.PCW_CLK2_FREQ {10000000} \
    CONFIG.PCW_CLK3_FREQ {10000000} \
@@ -260,6 +264,7 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_ENET1_RESET_ENABLE {0} \
    CONFIG.PCW_ENET_RESET_ENABLE {1} \
    CONFIG.PCW_ENET_RESET_SELECT {Share reset pin} \
+   CONFIG.PCW_EN_CLK0_PORT {1} \
    CONFIG.PCW_EN_EMIO_CD_SDIO0 {0} \
    CONFIG.PCW_EN_EMIO_ENET0 {1} \
    CONFIG.PCW_EN_EMIO_GPIO {1} \
@@ -270,14 +275,16 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_EN_SDIO0 {1} \
    CONFIG.PCW_EN_SMC {1} \
    CONFIG.PCW_EN_UART1 {1} \
-   CONFIG.PCW_FCLK0_PERIPHERAL_DIVISOR0 {6} \
-   CONFIG.PCW_FCLK0_PERIPHERAL_DIVISOR1 {4} \
+   CONFIG.PCW_FCLK0_PERIPHERAL_DIVISOR0 {8} \
+   CONFIG.PCW_FCLK0_PERIPHERAL_DIVISOR1 {6} \
    CONFIG.PCW_FCLK1_PERIPHERAL_DIVISOR0 {1} \
    CONFIG.PCW_FCLK1_PERIPHERAL_DIVISOR1 {1} \
    CONFIG.PCW_FCLK2_PERIPHERAL_DIVISOR0 {1} \
    CONFIG.PCW_FCLK2_PERIPHERAL_DIVISOR1 {1} \
    CONFIG.PCW_FCLK3_PERIPHERAL_DIVISOR0 {1} \
    CONFIG.PCW_FCLK3_PERIPHERAL_DIVISOR1 {1} \
+   CONFIG.PCW_FCLK_CLK0_BUF {TRUE} \
+   CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {25} \
    CONFIG.PCW_FPGA_FCLK0_ENABLE {1} \
    CONFIG.PCW_FPGA_FCLK1_ENABLE {0} \
    CONFIG.PCW_FPGA_FCLK2_ENABLE {0} \
@@ -589,6 +596,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net GPIO_I_0_1 [get_bd_ports emio_i] [get_bd_pins processing_system7_0/GPIO_I]
   connect_bd_net -net processing_system7_0_ENET0_GMII_TXD [get_bd_ports eth0_gmii_txd] [get_bd_pins processing_system7_0/ENET0_GMII_TXD]
   connect_bd_net -net processing_system7_0_ENET0_GMII_TX_EN [get_bd_ports eth0_gmii_tx_en] [get_bd_pins processing_system7_0/ENET0_GMII_TX_EN]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports eth0_clk] [get_bd_pins processing_system7_0/FCLK_CLK0]
   connect_bd_net -net processing_system7_0_GPIO_O [get_bd_ports emio_o] [get_bd_pins processing_system7_0/GPIO_O]
   connect_bd_net -net processing_system7_0_GPIO_T [get_bd_ports emio_t] [get_bd_pins processing_system7_0/GPIO_T]
 
