@@ -49,7 +49,7 @@ syn_properties = [
     ["steps.route_design.args.more options", "-verbose"],
     ["steps.post_route_phys_opt_design.args.more options", "-verbose"],
     ["steps.post_route_phys_opt_design.is_enabled", "1"],
-    ["steps.write_bitstream.args.verbose", "1"]]
+    ["steps.write_bitstream.args.bin_file", "1"]]
 
 syn_post_bitstream_cmd = "$(TCL_INTERPRETER) syn_post_bitstream_cmd.tcl $(TCL_OPEN)"
 
