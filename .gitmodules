@@ -1,0 +1,3 @@
+[submodule "vivado_ips"]
+	path = vivado_ips
+	url = https://github.com/embed-me/vivado_ips.git
