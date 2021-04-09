@@ -77,8 +77,7 @@ architecture arch of ebaz4205_top is
   signal emio_o : std_logic_vector(63 downto 0);
   signal emio_t : std_logic_vector(63 downto 0);
 
-  signal pwm0 : std_logic;
-  signal pwm1 : std_logic;
+  signal gpio : std_logic_vector(31 downto 0);
 
 begin
 
@@ -120,8 +119,7 @@ begin
       emio_i            => emio_i,
       emio_o            => emio_o,
       emio_t            => emio_t,
-      pwm0_o            => pwm0,
-      pwm1_o            => pwm1);
+      gpio_o            => gpio);
 
 
   -----------------------------------------------------------------------------
@@ -131,8 +129,8 @@ begin
   eth0_gmii_txd_o <= eth0_gmii_txd(eth0_gmii_txd_o'range);
   eth0_gmii_rxd   <= b"0000" & eth0_gmii_rxd_i;
 
-  red_led   <= pwm0;
-  green_led <= pwm1;
+  red_led   <= gpio(0);
+  green_led <= gpio(1);
 
 
 end architecture arch;
