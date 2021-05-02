@@ -54,6 +54,7 @@ syn_properties = [
 syn_post_bitstream_cmd = "$(TCL_INTERPRETER) syn_post_bitstream_cmd.tcl $(TCL_OPEN)"
 
 src_root = "../src/"
+fetchto = "../vivado_ips"
 
 files = [
     src_root + "xilinx/xdc/pinout.xdc",
