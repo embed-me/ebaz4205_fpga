@@ -52,3 +52,15 @@ set_property PACKAGE_PIN W13 [get_ports {green_led}]
 set_property PACKAGE_PIN W14 [get_ports {red_led}]
 
 set_property IOSTANDARD LVCMOS33 [get_ports *_led]
+
+
+# ---------------------------------------------------------
+# JTAG
+# ---------------------------------------------------------
+
+set_property PACKAGE_PIN D19 [get_ports {jtag_tms_o}]
+set_property PACKAGE_PIN H18 [get_ports {jtag_tck_o}]
+set_property PACKAGE_PIN K17 [get_ports {jtag_tdo_o}]
+set_property PACKAGE_PIN F19 [get_ports {jtag_tdi_o}]
+
+set_property IOSTANDARD LVCMOS33 [get_ports jtag_*]

@@ -46,7 +46,7 @@ entity ebaz4205_top is
     ddr_reset_n_io       : inout std_logic;
     ddr_we_n_io          : inout std_logic;
     -- eth0
-    eth0_clk_o           : out   std_logic; -- alternative clock, only used when Oscillator is missing on the PCB
+    eth0_clk_o           : out   std_logic;  -- alternative clock, only used when Oscillator is missing on the PCB
     eth0_gmii_rx_clk_i   : in    std_logic;
     eth0_gmii_rx_dv_i    : in    std_logic;
     eth0_gmii_rxd_i      : in    std_logic_vector (3 downto 0);
@@ -55,6 +55,11 @@ entity ebaz4205_top is
     eth0_gmii_txd_o      : out   std_logic_vector (3 downto 0);
     eth0_mdio_mdc_o      : out   std_logic;
     eth0_mdio_mdio_io    : inout std_logic;
+    -- jtag
+    jtag_tck_o           : out   std_logic;
+    jtag_tdi_o           : out   std_logic;
+    jtag_tdo_o           : in    std_logic;
+    jtag_tms_o           : out   std_logic;
     -- ios
     fixed_io_ddr_vrn_io  : inout std_logic;
     fixed_io_ddr_vrp_io  : inout std_logic;
@@ -118,7 +123,11 @@ begin
       fixed_io_ps_srstb => fixed_io_ps_srstb_io,
       emio_i            => emio_i,
       emio_o            => emio_o,
-      emio_t            => emio_t);
+      emio_t            => emio_t,
+      tck_o             => jtag_tck_o,
+      tdi_o             => jtag_tdi_o,
+      tdo_o             => jtag_tdo_o,
+      tms_o             => jtag_tms_o);
 
 
   -----------------------------------------------------------------------------
@@ -128,7 +137,7 @@ begin
   eth0_gmii_txd_o <= eth0_gmii_txd(eth0_gmii_txd_o'range);
   eth0_gmii_rxd   <= b"0000" & eth0_gmii_rxd_i;
 
-  red_led   <= emio_o(0);  
+  red_led   <= emio_o(0);
   green_led <= emio_o(1);
 
 

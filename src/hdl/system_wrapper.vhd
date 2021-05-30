@@ -1,8 +1,8 @@
 --Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------
 --Tool Version: Vivado v.2020.1 (lin64) Build 2902540 Wed May 27 19:54:35 MDT 2020
---Date        : Sun Jan 31 09:01:04 2021
---Host        : vm-centos7 running 64-bit CentOS Linux release 7.8.2003 (Core)
+--Date        : Sat May 29 18:46:55 2021
+--Host        : vm-centos7 running 64-bit CentOS Linux release 7.9.2009 (Core)
 --Command     : generate_target system_wrapper.bd
 --Design      : system_wrapper
 --Purpose     : IP block netlist
@@ -45,7 +45,11 @@ entity system_wrapper is
     fixed_io_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
     fixed_io_ps_clk : inout STD_LOGIC;
     fixed_io_ps_porb : inout STD_LOGIC;
-    fixed_io_ps_srstb : inout STD_LOGIC
+    fixed_io_ps_srstb : inout STD_LOGIC;
+    tck_o : out STD_LOGIC;
+    tdi_o : out STD_LOGIC;
+    tdo_o : in STD_LOGIC;
+    tms_o : out STD_LOGIC
   );
 end system_wrapper;
 
@@ -68,10 +72,6 @@ architecture STRUCTURE of system_wrapper is
     fixed_io_ps_srstb : inout STD_LOGIC;
     fixed_io_ps_clk : inout STD_LOGIC;
     fixed_io_ps_porb : inout STD_LOGIC;
-    eth0_mdio_mdc : out STD_LOGIC;
-    eth0_mdio_mdio_o : out STD_LOGIC;
-    eth0_mdio_mdio_t : out STD_LOGIC;
-    eth0_mdio_mdio_i : in STD_LOGIC;
     ddr_cas_n : inout STD_LOGIC;
     ddr_cke : inout STD_LOGIC;
     ddr_ck_n : inout STD_LOGIC;
@@ -86,7 +86,15 @@ architecture STRUCTURE of system_wrapper is
     ddr_dm : inout STD_LOGIC_VECTOR ( 3 downto 0 );
     ddr_dq : inout STD_LOGIC_VECTOR ( 31 downto 0 );
     ddr_dqs_n : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    ddr_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 )
+    ddr_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 );
+    eth0_mdio_mdc : out STD_LOGIC;
+    eth0_mdio_mdio_o : out STD_LOGIC;
+    eth0_mdio_mdio_t : out STD_LOGIC;
+    eth0_mdio_mdio_i : in STD_LOGIC;
+    tdi_o : out STD_LOGIC;
+    tms_o : out STD_LOGIC;
+    tck_o : out STD_LOGIC;
+    tdo_o : in STD_LOGIC
   );
   end component system;
   component IOBUF is
@@ -144,6 +152,10 @@ system_i: component system
       fixed_io_mio(53 downto 0) => fixed_io_mio(53 downto 0),
       fixed_io_ps_clk => fixed_io_ps_clk,
       fixed_io_ps_porb => fixed_io_ps_porb,
-      fixed_io_ps_srstb => fixed_io_ps_srstb
+      fixed_io_ps_srstb => fixed_io_ps_srstb,
+      tck_o => tck_o,
+      tdi_o => tdi_o,
+      tdo_o => tdo_o,
+      tms_o => tms_o
     );
 end STRUCTURE;

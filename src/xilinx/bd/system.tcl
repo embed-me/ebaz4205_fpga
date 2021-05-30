@@ -123,6 +123,8 @@ set bCheckIPsPassed 1
 set bCheckIPs 1
 if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
+xilinx.com:ip:debug_bridge:3.0\
+xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:processing_system7:5.5\
 "
 
@@ -208,6 +210,26 @@ proc create_root_design { parentCell } {
   set eth0_gmii_tx_clk [ create_bd_port -dir I -type clk eth0_gmii_tx_clk ]
   set eth0_gmii_tx_en [ create_bd_port -dir O -from 0 -to 0 eth0_gmii_tx_en ]
   set eth0_gmii_txd [ create_bd_port -dir O -from 7 -to 0 eth0_gmii_txd ]
+  set tck_o [ create_bd_port -dir O tck_o ]
+  set tdi_o [ create_bd_port -dir O tdi_o ]
+  set tdo_o [ create_bd_port -dir I tdo_o ]
+  set tms_o [ create_bd_port -dir O tms_o ]
+
+  # Create instance: axi_interconnect_0, and set properties
+  set axi_interconnect_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_0 ]
+  set_property -dict [ list \
+   CONFIG.NUM_MI {1} \
+ ] $axi_interconnect_0
+
+  # Create instance: debug_bridge_0, and set properties
+  set debug_bridge_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:debug_bridge:3.0 debug_bridge_0 ]
+  set_property -dict [ list \
+   CONFIG.C_DEBUG_MODE {3} \
+   CONFIG.C_NUM_BS_MASTER {0} \
+ ] $debug_bridge_0
+
+  # Create instance: proc_sys_reset_0, and set properties
+  set proc_sys_reset_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_0 ]
 
   # Create instance: processing_system7_0, and set properties
   set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
@@ -580,10 +602,13 @@ proc create_root_design { parentCell } {
    CONFIG.PCW_USB0_RESET_ENABLE {0} \
    CONFIG.PCW_USB1_RESET_ENABLE {0} \
    CONFIG.PCW_USB_RESET_ENABLE {1} \
-   CONFIG.PCW_USE_M_AXI_GP0 {0} \
+   CONFIG.PCW_USE_M_AXI_GP0 {1} \
+   CONFIG.PCW_USE_S_AXI_HP0 {0} \
  ] $processing_system7_0
 
   # Create interface connections
+  connect_bd_intf_net -intf_net S00_AXI_1 [get_bd_intf_pins axi_interconnect_0/S00_AXI] [get_bd_intf_pins processing_system7_0/M_AXI_GP0]
+  connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI [get_bd_intf_pins axi_interconnect_0/M00_AXI] [get_bd_intf_pins debug_bridge_0/S_AXI]
   connect_bd_intf_net -intf_net processing_system7_0_DDR [get_bd_intf_ports ddr] [get_bd_intf_pins processing_system7_0/DDR]
   connect_bd_intf_net -intf_net processing_system7_0_FIXED_IO [get_bd_intf_ports fixed_io] [get_bd_intf_pins processing_system7_0/FIXED_IO]
   connect_bd_intf_net -intf_net processing_system7_0_MDIO_ETHERNET_0 [get_bd_intf_ports eth0_mdio] [get_bd_intf_pins processing_system7_0/MDIO_ETHERNET_0]
@@ -594,13 +619,21 @@ proc create_root_design { parentCell } {
   connect_bd_net -net ENET0_GMII_RX_DV_0_1 [get_bd_ports eth0_gmii_rx_dv] [get_bd_pins processing_system7_0/ENET0_GMII_RX_DV]
   connect_bd_net -net ENET0_GMII_TX_CLK_0_1 [get_bd_ports eth0_gmii_tx_clk] [get_bd_pins processing_system7_0/ENET0_GMII_TX_CLK]
   connect_bd_net -net GPIO_I_0_1 [get_bd_ports emio_i] [get_bd_pins processing_system7_0/GPIO_I]
+  connect_bd_net -net debug_bridge_0_tap_tck [get_bd_ports tck_o] [get_bd_pins debug_bridge_0/tap_tck]
+  connect_bd_net -net debug_bridge_0_tap_tdi [get_bd_ports tdi_o] [get_bd_pins debug_bridge_0/tap_tdi]
+  connect_bd_net -net debug_bridge_0_tap_tms [get_bd_ports tms_o] [get_bd_pins debug_bridge_0/tap_tms]
+  connect_bd_net -net proc_sys_reset_0_peripheral_aresetn [get_bd_pins debug_bridge_0/s_axi_aresetn] [get_bd_pins proc_sys_reset_0/peripheral_aresetn]
   connect_bd_net -net processing_system7_0_ENET0_GMII_TXD [get_bd_ports eth0_gmii_txd] [get_bd_pins processing_system7_0/ENET0_GMII_TXD]
   connect_bd_net -net processing_system7_0_ENET0_GMII_TX_EN [get_bd_ports eth0_gmii_tx_en] [get_bd_pins processing_system7_0/ENET0_GMII_TX_EN]
-  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports eth0_clk] [get_bd_pins processing_system7_0/FCLK_CLK0]
+  connect_bd_net -net processing_system7_0_FCLK_CLK0 [get_bd_ports eth0_clk] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins debug_bridge_0/s_axi_aclk] [get_bd_pins proc_sys_reset_0/slowest_sync_clk] [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK]
+  connect_bd_net -net processing_system7_0_FCLK_RESET0_N [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_interconnect_0/M00_ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins proc_sys_reset_0/interconnect_aresetn]
+  connect_bd_net -net processing_system7_0_FCLK_RESET0_N1 [get_bd_pins proc_sys_reset_0/ext_reset_in] [get_bd_pins processing_system7_0/FCLK_RESET0_N]
   connect_bd_net -net processing_system7_0_GPIO_O [get_bd_ports emio_o] [get_bd_pins processing_system7_0/GPIO_O]
   connect_bd_net -net processing_system7_0_GPIO_T [get_bd_ports emio_t] [get_bd_pins processing_system7_0/GPIO_T]
+  connect_bd_net -net tap_tdo_0_1 [get_bd_ports tdo_o] [get_bd_pins debug_bridge_0/tap_tdo]
 
   # Create address segments
+  assign_bd_address -offset 0x43C00000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs debug_bridge_0/S_AXI/Reg0] -force
 
 
   # Restore current instance
