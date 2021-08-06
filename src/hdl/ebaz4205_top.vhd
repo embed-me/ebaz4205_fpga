@@ -17,7 +17,7 @@
 --
 --------------------------------------------------------------------------------
 -- Function description:
--- 
+--
 --------------------------------------------------------------------------------
 
 
@@ -46,7 +46,7 @@ entity ebaz4205_top is
     ddr_reset_n_io       : inout std_logic;
     ddr_we_n_io          : inout std_logic;
     -- eth0
-    eth0_clk_o           : out   std_logic; -- alternative clock, only used when Oscillator is missing on the PCB
+    eth0_clk_o           : inout std_logic; -- alternative clock, only used when Oscillator is missing on the PCB
     eth0_gmii_rx_clk_i   : in    std_logic;
     eth0_gmii_rx_dv_i    : in    std_logic;
     eth0_gmii_rxd_i      : in    std_logic_vector (3 downto 0);
@@ -81,7 +81,7 @@ architecture arch of ebaz4205_top is
 begin
 
   -----------------------------------------------------------------------------
-  -- Component Instatiations
+  -- Component Instantiations
   -----------------------------------------------------------------------------
 
   system_wrapper_i : entity work.system_wrapper
@@ -128,7 +128,7 @@ begin
   eth0_gmii_txd_o <= eth0_gmii_txd(eth0_gmii_txd_o'range);
   eth0_gmii_rxd   <= b"0000" & eth0_gmii_rxd_i;
 
-  red_led   <= emio_o(0);  
+  red_led   <= emio_o(0);
   green_led <= emio_o(1);
 
 
