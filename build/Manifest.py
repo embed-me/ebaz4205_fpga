@@ -1,24 +1,24 @@
 # ------------------------------------------------------------------------------
 #  Copyright (C) 2020 - embed-me
-# 
+#
 #  Lukas Lichtl <support@embed-me.com>
-# 
+#
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License v2 as published by
 #  the Free Software Foundation.
-# 
+#
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-# 
+#
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # ------------------------------------------------------------------------------
 #  Function description:
 #  Builds a minimalistic design for EBAZ4205.
-#  
+#
 #  1. Download hdlmake
 #  2. Run hdlmake to generate Makefile
 #  3. Run make
@@ -56,13 +56,10 @@ syn_post_bitstream_cmd = "$(TCL_INTERPRETER) syn_post_bitstream_cmd.tcl $(TCL_OP
 src_root = "../src/"
 
 files = [
-    src_root + "xilinx/xdc/pinout.xdc",    
+    src_root + "xilinx/xdc/pinout.xdc",
     src_root + "xilinx/xdc/general.xdc",
     src_root + "xilinx/xdc/bitstream.xdc",
     src_root + "xilinx/bd/system.tcl",
 ]
 
 modules = { "local" : [ src_root + "hdl/" ] };
-
-
-
